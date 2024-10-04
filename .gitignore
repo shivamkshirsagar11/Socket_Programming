@@ -2,9 +2,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
 # C extensions
 *.so
+*.vs
 
 # Distribution / packaging
 .Python
@@ -50,7 +50,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
-
+*/.venv/
 # Translations
 *.mo
 *.pot
