@@ -2,11 +2,12 @@ import socket
 import threading
 
 FORMAT = 'utf-8'
-PORT = 8888
-SERVER = socket.gethostbyname(socket.gethostname())
+PORT = 19386
+# SERVER = socket.gethostbyname(socket.gethostname())
+SERVER = "0.tcp.in.ngrok.io"
 ADDR = (SERVER, PORT)
 DISCON_MSG = "!discon"
-HEADER = 2048
+HEADER = 3000
 IS_CONNECTED = True
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,11 +17,13 @@ client.connect(ADDR)
 def recieve(conn:socket.socket):
     try:
         while IS_CONNECTED:
-            msg_len = conn.recv(HEADER).decode(FORMAT)
+            msg_len = conn.recv(HEADER).decode(FORMAT).strip()
             if msg_len:
                 msg_len = int(msg_len)
                 msg = conn.recv(msg_len).decode(FORMAT)
-                print(msg)
+                while "`" not in msg:
+                    msg += conn.recv(msg_len).decode(FORMAT)
+                print(msg[:-1].strip())
     except Exception as e:
         print(f"{type(e).__name__}: {e}")
 
@@ -32,6 +35,7 @@ def send(msg):
         if message_length < HEADER:
             message_length_encoded += b' ' * (HEADER - message_length)
         elif message_length > HEADER:
+            print("Too long message")
             return
         client.send(message_length_encoded)
         client.send(encode_msg)
@@ -48,10 +52,10 @@ while IS_CONNECTED:
     msg = input()
     if msg == DISCON_MSG:
         IS_CONNECTED = False
-        msg = client_name + ": "+ msg
+        msg = client_name + ": "+ msg + "`"
         send(msg)
         break
-    msg = client_name + ": "+ msg
+    msg = client_name + ": "+ msg + "`"
     send(msg)
 else:
     client.close()
