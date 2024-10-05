@@ -43,6 +43,7 @@ thread.start()
 print("WELCOME TO THE SHIVAM'S CHAT ROOM")
 print(f"For exiting type {DISCON_MSG}")
 client_name = input("Enter your name: ")
+print("Type anything and press enter to send message")
 while IS_CONNECTED:
     msg = input()
     if msg == DISCON_MSG:
