@@ -28,7 +28,10 @@ def broadcast(conn:socket.socket, msg:str):
                 clients_socket.send(msg_encode)
         return 1
     except Exception as e:
-        print(f"Broadcast {type(e).__name__}: {e}")
+        if type(e).__name__ != "ConnectionResetError":
+            print(f"Broadcast {type(e).__name__}: {e}")
+        else:
+            print(f"One connection is resetted...")
         return 1
 
 def handle_client(conn:socket.socket, addr):
@@ -39,10 +42,10 @@ def handle_client(conn:socket.socket, addr):
             if msg_len:
                 msg_len = int(msg_len)
                 msg = conn.recv(msg_len).decode(FORMAT)
-                if msg.count(DISCON_MSG) == 1:
+                if msg.split(": ")[1] == DISCON_MSG:
                     connected = False
-                    msg = msg.split(":")[0] + "is Leaving..."
-                broadcast(conn, "\t\t\t\t"+msg)
+                    msg = msg.split(": ")[0] + " is Leaving..."
+                broadcast(conn, "\n\t\t\t\t"+msg)
         else:
             conn.close()
             CLIENTS.remove(conn)

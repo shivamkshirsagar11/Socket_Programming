@@ -40,13 +40,17 @@ def send(msg):
 
 thread = threading.Thread(target=recieve, args=(client,))
 thread.start()
-client_name = input("Enter your name: ")
+print("WELCOME TO THE SHIVAM'S CHAT ROOM")
 print(f"For exiting type {DISCON_MSG}")
+client_name = input("Enter your name: ")
 while IS_CONNECTED:
-    msg = client_name + ": "+ input()
-    if msg.count(DISCON_MSG) == 1:
+    msg = input()
+    if msg == DISCON_MSG:
         IS_CONNECTED = False
+        msg = client_name + ": "+ msg
+        send(msg)
+        break
+    msg = client_name + ": "+ msg
     send(msg)
 else:
     client.close()
-    thread.join()
