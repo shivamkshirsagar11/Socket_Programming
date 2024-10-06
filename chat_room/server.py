@@ -42,11 +42,11 @@ def handle_client(conn:socket.socket, addr):
             msg_len = conn.recv(HEADER).decode(FORMAT).strip()
             if msg_len:
                 msg_len = int(msg_len)
-                msg = conn.recv(msg_len).decode(FORMAT)
+                msg = conn.recv(msg_len).decode(FORMAT).strip()
                 if msg[:-1].split(": ")[1] == DISCON_MSG:
                     connected = False
                     msg = msg.split(": ")[0] + " is Leaving...`"
-                broadcast(conn, "--->"+msg)
+                broadcast(conn, msg)
         else:
             conn.close()
             CLIENTS.remove(conn)
