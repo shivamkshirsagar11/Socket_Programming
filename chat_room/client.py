@@ -31,8 +31,8 @@ def recieve(conn:socket.socket):
 def send(msg):
     try:
         encode_msg = str(msg).strip().encode(FORMAT)
-        message_length = str(len(encode_msg))
-        message_length_encoded = message_length.encode(FORMAT)
+        message_length = len(encode_msg)
+        message_length_encoded = str(message_length).encode(FORMAT)
         if message_length < HEADER:
             message_length_encoded += b' ' * (HEADER - message_length)
         elif message_length > HEADER:
