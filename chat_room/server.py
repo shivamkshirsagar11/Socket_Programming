@@ -7,7 +7,7 @@ PORT = 8888
 SERVER = "127.0.0.1"
 ADDR = (SERVER, PORT)
 DISCON_MSG = "!discon"
-HEADER = 3000
+HEADER = 1024
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
@@ -40,12 +40,9 @@ def handle_client(conn:socket.socket, addr):
         connected = True
         while connected:
             msg_len = conn.recv(HEADER).decode(FORMAT).strip()
-            print()
             if msg_len:
                 msg_len = int(msg_len)
                 msg = conn.recv(msg_len).decode(FORMAT)
-                while "`" not in msg:
-                    msg += conn.recv(msg_len).decode(FORMAT)
                 if msg[:-1].split(": ")[1] == DISCON_MSG:
                     connected = False
                     msg = msg.split(": ")[0] + " is Leaving...`"

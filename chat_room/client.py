@@ -7,7 +7,7 @@ PORT = 18057
 SERVER = "0.tcp.in.ngrok.io"
 ADDR = (SERVER, PORT)
 DISCON_MSG = "!discon"
-HEADER = 3000
+HEADER = 1024
 IS_CONNECTED = True
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -19,11 +19,8 @@ def recieve(conn:socket.socket):
         while IS_CONNECTED:
             msg_len = str(conn.recv(HEADER).decode(FORMAT)).strip()
             if msg_len:
-                print()
                 msg_len = int(msg_len)
                 msg = conn.recv(msg_len).decode(FORMAT)
-                while "`" not in msg:
-                    msg += conn.recv(msg_len).decode(FORMAT)
                 print(msg[:-1].strip())
     except Exception as e:
         print(f"{type(e).__name__}: {e}")
