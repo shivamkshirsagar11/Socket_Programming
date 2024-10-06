@@ -25,8 +25,8 @@ def broadcast(conn:socket.socket, msg:str):
             return 0
         for clients_socket in CLIENTS:
             if clients_socket != conn:
-                clients_socket.send(msg_len_encode)
-                clients_socket.send(msg_encode)
+                clients_socket.sendall(msg_len_encode)
+                clients_socket.sendall(msg_encode)
         return 1
     except Exception as e:
         if type(e).__name__ != "ConnectionResetError":

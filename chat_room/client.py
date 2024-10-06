@@ -35,8 +35,8 @@ def send(msg):
         elif message_length > HEADER:
             print("Too long message")
             return
-        client.send(message_length_encoded)
-        client.send(encode_msg)
+        client.sendall(message_length_encoded)
+        client.sendall(encode_msg)
     except Exception as e:
         print(f"{type(e).__name__}: {e}")
 
