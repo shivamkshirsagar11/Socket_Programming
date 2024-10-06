@@ -2,7 +2,7 @@ import socket
 import threading
 
 FORMAT = 'utf-8'
-PORT = 19386
+PORT = 18057
 # SERVER = socket.gethostbyname(socket.gethostname())
 SERVER = "0.tcp.in.ngrok.io"
 ADDR = (SERVER, PORT)
@@ -17,8 +17,9 @@ client.connect(ADDR)
 def recieve(conn:socket.socket):
     try:
         while IS_CONNECTED:
-            msg_len = conn.recv(HEADER).decode(FORMAT).strip()
+            msg_len = str(conn.recv(HEADER).decode(FORMAT)).strip()
             if msg_len:
+                print()
                 msg_len = int(msg_len)
                 msg = conn.recv(msg_len).decode(FORMAT)
                 while "`" not in msg:
@@ -29,9 +30,9 @@ def recieve(conn:socket.socket):
 
 def send(msg):
     try:
-        encode_msg = str(msg).encode(FORMAT)
-        message_length = len(encode_msg)
-        message_length_encoded = f"{message_length}".encode(FORMAT)
+        encode_msg = str(msg).strip().encode(FORMAT)
+        message_length = str(len(encode_msg))
+        message_length_encoded = message_length.encode(FORMAT)
         if message_length < HEADER:
             message_length_encoded += b' ' * (HEADER - message_length)
         elif message_length > HEADER:

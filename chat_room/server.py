@@ -16,7 +16,7 @@ CLIENTS = set()
 
 def broadcast(conn:socket.socket, msg:str):
     try:
-        msg_encode = msg.encode(FORMAT)
+        msg_encode = msg.strip().encode(FORMAT)
         msg_len = len(msg_encode)
         msg_len_encode = str(msg_len).encode(FORMAT)
         if msg_len < HEADER:
@@ -40,6 +40,7 @@ def handle_client(conn:socket.socket, addr):
         connected = True
         while connected:
             msg_len = conn.recv(HEADER).decode(FORMAT).strip()
+            print()
             if msg_len:
                 msg_len = int(msg_len)
                 msg = conn.recv(msg_len).decode(FORMAT)
