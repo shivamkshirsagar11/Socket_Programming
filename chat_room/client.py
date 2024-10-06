@@ -21,10 +21,8 @@ def recieve(conn:socket.socket):
             if msg_len:
                 msg_len = int(msg_len)
                 msg = b""
-                while True:
+                while b'`' not in msg:
                     data = conn.recv(msg_len)
-                    if not data:
-                        break
                     msg += data
                 msg = msg.decode(FORMAT)
                 print(msg[:-1].strip())

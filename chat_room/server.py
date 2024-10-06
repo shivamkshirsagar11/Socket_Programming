@@ -43,10 +43,8 @@ def handle_client(conn:socket.socket, addr):
             if msg_len:
                 msg_len = int(msg_len)
                 msg = b""
-                while True:
+                while b'`' not in msg:
                     data = conn.recv(msg_len)
-                    if not data:
-                        break
                     msg += data
                 msg = msg.decode(FORMAT)
                 if msg[:-1].split(": ")[1] == DISCON_MSG:
