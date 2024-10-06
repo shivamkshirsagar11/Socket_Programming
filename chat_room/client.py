@@ -20,7 +20,13 @@ def recieve(conn:socket.socket):
             msg_len = str(conn.recv(HEADER).decode(FORMAT)).strip()
             if msg_len:
                 msg_len = int(msg_len)
-                msg = conn.recv(msg_len).decode(FORMAT)
+                msg = b""
+                while True:
+                    data = conn.recv(msg_len)
+                    if not data:
+                        break
+                    msg += data
+                msg = msg.decode(FORMAT)
                 print(msg[:-1].strip())
     except Exception as e:
         print(f"{type(e).__name__}: {e}")
