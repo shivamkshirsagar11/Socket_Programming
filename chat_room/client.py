@@ -20,7 +20,7 @@ def recieve(conn:socket.socket):
             msg_len = str(conn.recv(HEADER).decode(FORMAT)).strip()
             if msg_len:
                 print()
-                msg_len = int(msg_len.decode(FORMAT).strip())
+                msg_len = int(msg_len)
                 msg = conn.recv(msg_len).decode(FORMAT)
                 while "`" not in msg:
                     msg += conn.recv(msg_len).decode(FORMAT)
